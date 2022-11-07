@@ -1,0 +1,151 @@
+=== Website ===
+
+01. Golang
+
+	https://golang.org			==> https://go.dev/
+	- play.golang.org			==> https://go.dev/play/
+	- https://golang.org/dl/	==> https://go.dev/dl/
+	
+02. trends.google.com
+	compare : go, python, java
+	
+=== Installing & Configuring Go ===
+
+01. Double click go1.19.2.windows-amd64.msi
+
+02. Location : c:\Program Files\Go\
+
+03. Check Go Installation
+
+	$ go version
+		go version go1.19.2 windows/amd64
+
+	$ go help
+	$ go env
+
+04. Create Working directory : c:\labs
+
+	$ mkdir c:\labs
+	
+=== Hello Golang ===
+
+01. Create file c:\labs\helloworld.go
+
+	package main
+	
+	// Program pertama, single line comment
+	
+	/*
+		Multiple
+		line 
+		comment
+	*/
+	
+	import(
+	  "fmt"
+	)
+	
+	func main() {
+		fmt.Println("Hello World, James Bond")
+	}
+
+02. Run
+
+	$ cd c:\labs
+	$ dir
+		helloworld.go
+	$ go run helloworld.go
+		Hello World, James Bond
+		
+	$ dir ==> Tidak membentuk file baru
+		helloworld.go
+
+03. Build
+
+	$ cd c:\labs
+	$ dir
+		helloworld.go
+	$ go build helloworld.go
+	$ dir
+		helloworld.go	helloworld.exe
+	$ helloworld.exe
+		Hello World, James Bond
+
+=== Visual Studio Code ===
+
+01. Website
+		https://code.visualstudio.com/
+
+02. Install Visual Code
+	- Double Click VSCodeSetup-x64-1.71.0.exe
+	- Location : C:\Program Files\Microsoft VS Code
+	- Check "Create a desktop icon"
+
+03. Install Extension : Go
+
+04. View -> Command Pallete...
+    Go: Install/Update Tools
+	Install All
+
+		Installing 7 tools at C:\Users\student\go\bin in module mode.
+		  gotests
+		  gomodifytags
+		  impl
+		  goplay
+		  dlv
+		  staticcheck
+		  gopls
+
+		Installing github.com/cweill/gotests/gotests@latest (C:\Users\student\go\bin\gotests.exe) SUCCEEDED
+		Installing github.com/fatih/gomodifytags@latest (C:\Users\student\go\bin\gomodifytags.exe) SUCCEEDED
+		Installing github.com/josharian/impl@latest (C:\Users\student\go\bin\impl.exe) SUCCEEDED
+		Installing github.com/haya14busa/goplay/cmd/goplay@latest (C:\Users\student\go\bin\goplay.exe) SUCCEEDED
+		Installing github.com/go-delve/delve/cmd/dlv@latest (C:\Users\student\go\bin\dlv.exe) SUCCEEDED
+		Installing honnef.co/go/tools/cmd/staticcheck@latest (C:\Users\student\go\bin\staticcheck.exe) SUCCEEDED
+		Installing golang.org/x/tools/gopls@latest (C:\Users\student\go\bin\gopls.exe) SUCCEEDED
+
+		All tools successfully installed. You are ready to Go. :)
+
+05. Buka helloworld.go di Visual Studio Code
+	- Open Folder : c:\labs
+	
+06. Configure Zoom in/out
+	File -> Preferences -> Setting
+
+07. Edit func main
+
+	func main() {
+		fmt.Println("Hello World, James Bond")
+		fmt.Println("Hari Budisantoso")
+	}
+
+08. Run program helloworld.go
+	Terminal -> New Terminal
+	
+	$ go run helloworld.go
+		Hello World, James Bond
+		Hari Budisantoso 
+
+09. Install Extension : Code Runner
+
+=== Declaring Variable ===
+
+01. Buat folder c:\labs\01-primitive-data-types
+02. Open folder c:\labs\01-primitive-data-types
+    di Visual Studio Code
+03. Create file 01-primitive-data-types\main.go
+
+=== Working With Collections : Array ===
+
+01. Buat folder c:\labs\02-collections
+02. Open folder c:\labs\02-collections
+    di Visual Studio Code
+03. Create file 02-collections\main.go
+
+
+
+
+
+
+
+
