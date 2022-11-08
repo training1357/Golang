@@ -1,0 +1,6 @@
+=== Controlling Program Flow ===
+
+01. Buat folder c:\labs\03-controlling-program-flow
+02. Open folder c:\labs\03-controlling-program-flow
+    di Visual Studio Code
+03. Create file 03-controlling-program-flow\main.go
