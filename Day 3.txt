@@ -1,0 +1,16 @@
+=== Function & Methods ===
+
+01. Buat folder c:\labs\04-function
+02. Open folder c:\labs\04-function
+    di Visual Studio Code
+03. Create file 04-function\main.go
+
+04. Buat folder c:\labs\05-methods
+05. Open folder c:\labs\05-methods
+    di Visual Studio Code
+06. Create file 05-methods\main.go
+
+07. Buat folder c:\labs\06-interface
+08. Open folder c:\labs\06-interface
+    di Visual Studio Code
+09. Create file 06-interface\main.go
