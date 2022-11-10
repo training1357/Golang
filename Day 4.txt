@@ -1,0 +1,62 @@
+=== Packages & Modules ===
+
+01. Buat folder c:\labs\07-packages
+02. Open folder c:\labs\07-packages
+    di Visual Studio Code
+03. Create file 07-packages\main.go
+
+--- Module 1 ---
+
+01. Buat Directory
+
+	08-modules\packer
+	              numbers
+				  strings
+					 greetings
+
+02. Open folder 08-modules\packer
+    di Visual Studio Code
+	
+03. Buat file go.mod
+
+	$ cd 08-modules\packer
+	$ go mod init example.com/packer
+
+04. Buat file 08-modules\packer\numbers\prime.go
+05. Buat file 08-modules\packer\strings\reverse.go
+06. Buat file 08-modules\packer\strings\reverse_runes.go
+07. Buat file 08-modules\packer\strings\greetings\texts.go
+08. Buat file 08-modules\packer\main.go
+09. Build
+
+	$ cd 08-modules\packer\
+	$ go build
+	$ dir
+		packer.exe
+	$ packer.exe
+		true
+		Hello World to Golang
+		osotnasiduB iraH     
+		4
+
+--- Module 2 ---
+
+01. Buat Directory
+
+	08-modules\thirdparty
+	
+02. Open folder 08-modules\thirdparty
+    di Visual Studio Code
+	
+03. Buat file go.mod
+
+	$ cd 08-modules\thirdparty
+	$ go mod init example.com/thirdparty
+
+04. Buat file thirdparty\main.go
+
+05. Download library third party
+
+	$ cd 08-modules\thirdparty
+	$ go mod tidy
+	
