@@ -1,0 +1,110 @@
+https://db-engines.com/en/ranking
+
+=== Golang + RDBMS ===
+
+01. Instalasi MariaDB Database
+	- mariadb.org
+	- mariadb-10.9.2-winx64.msi
+	- Password User root : Welcome1
+	- Port : 3306
+	- Env. Variable : 
+		PATH=C:\Program Files\MariaDB 10.9\bin
+	- Test
+		- Buka Command Prompt
+		$ echo %PATH%
+		
+02. Test
+	$ mysql --version
+		mysql  Ver 15.1 Distrib 10.9.2-MariaDB, for Win64 (AMD64)
+	$ mysql -u root -p
+		Enter password: Welcome1
+	MariaDB [(none)]> show databases;
+		+--------------------+
+		| Database           |
+		+--------------------+
+		| information_schema |
+		| mysql              |
+		| performance_schema |
+		| sys                |
+		+--------------------+
+		4 rows in set (0.002 sec)	
+
+	MariaDB [(none)]> create database hrd;
+	MariaDB [(none)]> show databases;
+		+--------------------+
+		| Database           |
+		+--------------------+
+		| hrd                |
+		| information_schema |
+		| mysql              |
+		| performance_schema |
+		| sys                |
+		+--------------------+
+		5 rows in set (0.001 sec)	
+	
+	MariaDB [(none)]> use hrd;
+	MariaDB [hrd]> create table cities (
+						id int primary key,
+						name varchar(30),
+						population int
+					  );
+	MariaDB [hrd]> show tables;
+		+---------------+
+		| Tables_in_hrd |
+		+---------------+
+		| cities        |
+		+---------------+
+		1 row in set (0.001 sec)		
+
+	MariaDB [hrd]> desc cities;
+		+------------+-------------+------+-----+---------+-------+
+		| Field      | Type        | Null | Key | Default | Extra |
+		+------------+-------------+------+-----+---------+-------+
+		| id         | int(11)     | NO   | PRI | NULL    |       |
+		| name       | varchar(30) | YES  |     | NULL    |       |
+		| population | int(11)     | YES  |     | NULL    |       |
+		+------------+-------------+------+-----+---------+-------+
+		3 rows in set (0.049 sec)	
+	
+	MariaDB [hrd]> insert into cities values (1,'Jakarta',500000);
+	MariaDB [hrd]> insert into cities values (2,'Semarang',300000);
+	MariaDB [hrd]> insert into cities values (3,'Surabaya',400000);
+	MariaDB [hrd]> select * from cities;
+		+----+----------+------------+
+		| id | name     | population |
+		+----+----------+------------+
+		|  1 | Jakarta  |     500000 |
+		|  2 | Semarang |     300000 |
+		|  3 | Surabaya |     400000 |
+		+----+----------+------------+
+		3 rows in set (0.000 sec)	
+		
+03. Install DBeaver
+	- dbeaver.io  => Community Edition
+	  dbeaver.com => Enterprise Edition
+	- dbeaver-ce-22.2.0-x86_64-setup.exe
+	- Buat shortcut di Desktop
+
+04. Create connection dg DBeaver
+	ke database hrd di MariaDB
+	- Host 		: localhost
+	  Port 		: 3306
+	  Database 	: hrd
+	  User 		: root
+	  Password 	: Welcome1
+
+05. Persiapan program Go
+
+	$ mkdir c:\labs\09-gomariadb
+	$ cd c:\labs\09-gomariadb
+	$ go mod init example.com/gomariadb
+	$ go get github.com/go-sql-driver/mysql
+	$ mkdir c:\labs\09-gomariadb\crud
+
+
+
+
+
+
+	
+		
