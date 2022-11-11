@@ -100,11 +100,157 @@ https://db-engines.com/en/ranking
 	$ go mod init example.com/gomariadb
 	$ go get github.com/go-sql-driver/mysql
 	$ mkdir c:\labs\09-gomariadb\crud
-
-
-
-
-
-
 	
+	Buka Visual Studio Code, aktifkan folder c:\labs\09-gomariadb
+
+06. Create file 09-gomariadb\crud\connect.go
+
+	package crud
+
+	import (
+		"database/sql"
+
+		_ "github.com/go-sql-driver/mysql"
+	)
+
+	func connect() (*sql.DB, error) {
+		db, err := sql.Open("mysql", "root:Welcome1@tcp(localhost:3306)/hrd")
+
+		if err != nil {
+			return nil, err
+		}
+
+		return db, nil
+	}
+
+07. Create file 09-gomariadb\main.go
+
+	package main
+
+	import "example.com/gomariadb/crud"
+
+	func main() {
+		crud.connect()
+	}
+
+08. Create file 09-gomariadb\crud\select_all.go
+
+	package crud
+
+	import (
+		"fmt"
+		"log"
+	)
+
+	type City struct {
+		Id         int
+		Name       string
+		Population int
+	}
+
+	func SelectAll() {
+		db, err := connect()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		defer db.Close()
+
+		rows, err := db.Query("select * from cities")
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer rows.Close()
+
+		for rows.Next() {
+			var city City
+			err := rows.Scan(&city.Id, &city.Name, &city.Population)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("%v\n", city)
+		}
+	}
+
+09. Create file 09-gomariadb\crud\insert_row.go
+
+	package crud
+
+	import (
+		"fmt"
+	)
+
+	func InsertRow() {
+		db, err := connect()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		defer db.Close()
+
+		_, err = db.Exec("insert into cities(id, name, population) values(?,?,?)", 4, "Denpasar", 100000)
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Println("Insert Success")
+	}	
+
+10. Create file 09-gomariadb\crud\update_row.go
+
+	package crud
+
+	import (
+		"fmt"
+	)
+
+	func UpdateRow() {
+		db, err := connect()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		defer db.Close()
+
+		_, err = db.Exec("update cities set name = ?, population = ? where id = ?", "Garut", 12345, 4)
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Println("Update Success")
+	}
+
+11. Create file 09-gomariadb\crud\delete_row.go
+
+	package crud
+
+	import (
+		"fmt"
+	)
+
+	func DeleteRow() {
+		db, err := connect()
+		if err != nil {
+			fmt.Println(err.Error())
+			return
+		}
+		defer db.Close()
+
+		_, err = db.Exec("delete from cities where id = ?", 4)
+		if err != nil {
+			panic(err.Error())
+		}
+		fmt.Println("Delete Success")
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 		
