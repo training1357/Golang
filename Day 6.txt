@@ -1,0 +1,275 @@
+01. Buat folder c:\labs\10-websimple
+
+02. Buat file 10-websimple\main.go
+	- Aktifkan folder 10-websimple di Visual Studio Code
+	
+	package main
+
+	import (
+		"fmt"
+		"net/http"
+	)
+
+	func main() {
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			fmt.Fprintf(w, "Hello, James Bond. Anda tadi request %s\n", r.URL.Path)
+		})
+
+		http.ListenAndServe(":80", nil)
+	}	
+	
+03. Run website
+	- Buka Web Browser
+	
+	URL : http://localhost
+		
+		Hello, James Bond. Anda tadi request /
+		
+=========================
+
+Buat website middle
+- Belajar template
+- Belajar static assets
+	
+01. Buat folder 
+	- Aktifkan folder 11-webmiddle di Visual Studio Code
+	
+	$ cd c:\labs
+	$ mkdir 11-webmiddle
+	$ mkdir 11-webmiddle\assets
+	$ mkdir 11-webmiddle\views		
+
+02. Buat file \assets\site.css
+	
+	body {
+		font-family: "Helvetica Neue";
+		font-weight: bold;
+		font-size: 24px;
+		color: #07c;
+	}		
+
+03. Buat file \views\index.html
+
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<title>{{.title}}</title>
+			<link rel="stylesheet" href="/static/site.css" />
+		</head>
+		<body>
+			<p>Welcome {{.name}}</p>
+		</body>
+	</html>		
+
+04. Buat file 11-webmiddle\main.go
+
+	package main
+
+	import "fmt"
+	import "net/http"
+	import "html/template"
+	import "path"
+
+	func main() {
+		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+			var filepath = path.Join("views", "index.html")
+			var tmpl, err = template.ParseFiles(filepath)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			var data = map[string]interface{}{
+				"title": "Learning Golang Web",
+				"name":  "James Bond",
+			}
+
+			err = tmpl.Execute(w, data)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+		})
+
+		http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
+
+		fmt.Println("server started at localhost:9000")
+		http.ListenAndServe(":9000", nil)
+	}		
+		
+05. Run website
+	- Buka Web Browser
+	
+	URL : http://localhost:9000
+
+=========================================
+
+Buat website DB1
+
+01. Buat Database
+
+	$ mysql -u root -p
+	Enter password: Welcome1
+
+	MariaDB [(none)]> show databases;
+	MariaDB [(none)]> use hrd;
+	MariaDB [hrd]> show tables;
+	MariaDB [hrd]> CREATE TABLE employees(
+					id INT PRIMARY KEY AUTO_INCREMENT, 
+					name VARCHAR(35), 
+					salary INT
+				   );
+		   				   
+	MariaDB [hrd]> show tables;
+	MariaDB [hrd]> INSERT INTO employees(name, salary) 
+				   VALUES('Badu', 1500);	
+	MariaDB [hrd]> INSERT INTO employees(name, salary) 
+				   VALUES('Mince', 1700);				
+	MariaDB [hrd]> INSERT INTO employees(name, salary) 
+				   VALUES('Dorian', 1250);					   
+	MariaDB [hrd]> select * from employees;			   
+	
+		+----+--------+--------+
+		| id | name   | salary |
+		+----+--------+--------+
+		|  1 | Badu   |   1500 |
+		|  2 | Mince  |   1700 |
+		|  3 | Dorian |   1250 |
+		+----+--------+--------+
+		3 rows in set (0.000 sec)
+	
+	MariaDB [hrd]> exit
+
+02. Buat folder 
+	- Aktifkan folder 12-webdb1 di Visual Studio Code
+	
+	$ cd c:\labs
+	$ mkdir 12-webdb1
+	$ mkdir 12-webdb1\form
+
+03. Buat go.mod file
+
+	$ cd c:\labs\12-webdb1
+	$ go mod init example.com/websitedb1
+	$ go get github.com/go-sql-driver/mysql
+
+04. Buat file \form\index.html
+
+	{{ define "Index" }}
+		{{template "Header"}}
+		<table border="1">
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>Name</td>
+					<td>Salary</td>
+				</tr>
+			</thead>
+			<tbody>
+				{{range .}}
+				<tr>
+					<td>{{.Id}}</td>
+					<td>{{.Name}}</td>
+					<td>{{.Salary}}</td>               
+				</tr>
+				{{end}}
+			</tbody>
+		</table>
+		{{template "Footer"}}
+	{{end}}
+
+04. Buat file \form\Header.html
+
+	{{define "Header"}}
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<title>Golang Example</title>
+	</head>
+	<body>
+	   <h1>Golang Website Database Example</h1> 
+	{{end}}
+
+05. Buat file \form\Footer.html
+
+	{{define "Footer"}}
+		</body>
+	</html>
+	{{end}}
+
+06. Buat file 12-webdb1\main.go
+
+	package main
+
+	import (
+		"database/sql"
+		"fmt"
+		"net/http"
+		"text/template"
+
+		_ "github.com/go-sql-driver/mysql"
+	)
+
+	type Employee struct {
+		Id         int
+		Name       string
+		Salary 	   int
+	}
+
+	func dbConn() (db *sql.DB) {
+		db, err := sql.Open("mysql", "root:Welcome1@tcp(localhost:3306)/hrd")
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		return db
+	}
+
+	var tmpl = template.Must(template.ParseGlob("form/*"))
+
+	func Index(w http.ResponseWriter, r *http.Request) {
+		db := dbConn()
+		selDB, err := db.Query("select * from employees order by id")
+		if err != nil {
+			panic(err.Error())
+		}
+		employee := Employee{}
+		res := []Employee{}
+		for selDB.Next() {
+			err = selDB.Scan(&employee.Id, &employee.Name, &employee.Salary)
+			if err != nil {
+				panic(err.Error())
+			}
+			res = append(res, employee)
+		}
+		tmpl.ExecuteTemplate(w, "Index", res)
+		defer db.Close()
+	}
+
+	func main() {
+		fmt.Println("Server Started on http://localhost:80")
+		http.HandleFunc("/", Index)
+		http.ListenAndServe(":80", nil)
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	
+		
+		
+		
+		
+		
+		
+		
+		
+		
